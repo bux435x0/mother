@@ -1,318 +1,52 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCantina - KI Club Düsseldorf</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
-            color: #00ff88;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: twinkle 3s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        header {
-            text-align: center;
-            padding: 3rem 0;
-            border-bottom: 2px solid #00ff88;
-            margin-bottom: 3rem;
-            animation: glowBorder 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glowBorder {
-            from { border-color: #00ff88; }
-            to { border-color: #00cc66; }
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88;
-            animation: pulse 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulse {
-            from { text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88; }
-            to { text-shadow: 0 0 30px #00ff88, 0 0 60px #00ff88; }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #66ffaa;
-            letter-spacing: 2px;
-        }
-
-        .terminal {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #00ff88;
-            border-radius: 10px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-        }
-
-        .terminal-header {
-            font-size: 0.9rem;
-            color: #00ff88;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #00ff88;
-        }
-
-        .terminal-content {
-            line-height: 1.8;
-        }
-
-        .prompt {
-            color: #ff00ff;
-            margin-right: 0.5rem;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .info-card {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #00ff88;
-            border-radius: 10px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-        }
-
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
-            border-color: #66ffaa;
-        }
-
-        .info-card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: #ff00ff;
-            text-shadow: 0 0 10px #ff00ff;
-        }
-
-        .info-card p {
-            line-height: 1.6;
-            color: #00ff88;
-        }
-
-        .info-card a {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.5rem 1rem;
-            border: 1px solid #00ff88;
-            border-radius: 6px;
-            color: #0fffd7;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-        }
-
-        .info-card a:hover {
-            border-color: #66ffaa;
-            color: #ffffff;
-            box-shadow: 0 0 25px rgba(0, 255, 136, 0.5);
-        }
-
-        .highlight {
-            color: #ffff00;
-            font-weight: bold;
-            text-shadow: 0 0 5px #ffff00;
-        }
-
-        .emoji {
-            font-size: 2rem;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-            border-top: 2px solid #00ff88;
-            color: #66ffaa;
-        }
-
-        .ascii-art {
-            font-size: 0.5rem;
-            line-height: 1;
-            color: #00ff88;
-            text-align: center;
-            margin: 2rem 0;
-            white-space: pre;
-            overflow-x: auto;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .ascii-art {
-                font-size: 0.3rem;
-            }
-        }
-
-        .blink {
-            animation: blink 1s step-start infinite;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nostromo Mother Interface</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-
-    <div class="container">
-        <header>
-            <h1>SmartCantina</h1>
-            <p class="subtitle">[ KI CLUB DÜSSELDORF ]</p>
-        </header>
-
-        <div class="terminal">
-            <div class="terminal-header">
-                <span class="prompt">user@smartcantina:~$</span> ./welcome.sh
-            </div>
-            <div class="terminal-content">
-                <p><span class="prompt">&gt;</span> Willkommen bei SmartCantina!</p>
-                <p><span class="prompt">&gt;</span> Ein Club für KI-Enthusiasten, Tech-Nerds und alle,</p>
-                <p><span class="prompt">&gt;</span> die sich für künstliche Intelligenz begeistern.</p>
-                <p><span class="prompt">&gt;</span> <span class="blink">_</span></p>
-            </div>
-        </div>
-
-        <div class="ascii-art">
-   _____ __  __          _____ _______   _____          _   _ _______ _____ _   _
-  / ____|  \/  |   /\   |  __ \__   __| / ____|   /\   | \ | |__   __|_   _| \ | |   /\
- | (___ | \  / |  /  \  | |__) | | |   | |       /  \  |  \| |  | |    | | |  \| |  /  \
-  \___ \| |\/| | / /\ \ |  _  /  | |   | |      / /\ \ | . ` |  | |    | | | . ` | / /\ \
-  ____) | |  | |/ ____ \| | \ \  | |   | |____ / ____ \| |\  |  | |   _| |_| |\  |/ ____ \
- |_____/|_|  |_/_/    \_\_|  \_\ |_|    \_____/_/    \_\_| \_|  |_|  |_____|_| \_/_/    \_\
-        </div>
-
-        <div class="info-grid">
-            <div class="info-card">
-                <span class="emoji">🤖</span>
-                <h2>Was ist SmartCantina?</h2>
-                <p>Wir sind eine Community von KI-Enthusiasten, die sich regelmäßig treffen, um über künstliche Intelligenz, Machine Learning, Deep Learning und die neuesten Tech-Trends zu diskutieren.</p>
-            </div>
-
-            <div class="info-card">
-                <span class="emoji">📍</span>
-                <h2>Location</h2>
-                <p><span class="highlight">Kantine des Gemeinschaftsateliers ES365</span></p>
-                <p>Düsseldorf</p>
-                <p>Ein inspirierender Ort für kreative Köpfe und Tech-Begeisterte!</p>
-            </div>
-
-            <div class="info-card">
-                <span class="emoji">⏰</span>
-                <h2>Wann?</h2>
-                <p><span class="highlight">Jeden Freitag um 20:00 Uhr</span></p>
-                <p>Komm vorbei und tausche dich mit Gleichgesinnten aus!</p>
-            </div>
-
-            <div class="info-card">
-                <span class="emoji">💡</span>
-                <h2>Was machen wir?</h2>
-                <p>
-                    • Vorträge über KI & ML<br>
-                    • Hands-on Coding Sessions<br>
-                    • Diskussionen über neue Technologien<br>
-                    • Networking & Pizza
-                </p>
-            </div>
-
-            <div class="info-card">
-                <span class="emoji">🚀</span>
-                <h2>Für wen?</h2>
-                <p>Alle sind willkommen! Egal ob Anfänger oder Experte, Student oder Professional - Hauptsache du bist neugierig auf KI!</p>
-                <p>Komm einfach vorbei und werde Teil unserer Community!</p>
-            </div>
-
-            <div class="info-card">
-                <span class="emoji">🚉</span>
-                <h2>Anfahrt</h2>
-                <p>Am bequemsten erreichst du uns mit der <span class="highlight">U75</span>.</p>
-                <p>Steig an der Haltestelle <span class="highlight">Lierenfeld Betriebshof</span> aus und spaziere in wenigen Minuten zur Kantine des ES365.</p>
-                <a href="anfahrt.html">Mehr Details</a>
-            </div>
-        </div>
-
-        <footer>
-            <p>&lt;/&gt; Made with ❤️ and AI by SmartCantina</p>
-            <p>Düsseldorf • 2025</p>
-            <p><a href="anfahrt.html" style="color: #66ffaa; text-decoration: none;">Anfahrt</a></p>
-        </footer>
+  <div id="api-overlay" class="overlay visible">
+    <div class="panel">
+      <h1>MOTHER AUTHENTICATION</h1>
+      <p>Enter Google Gemini API key to initiate interface.</p>
+      <input type="password" id="api-key-input" placeholder="AIza..." autocomplete="off" />
+      <div class="panel-actions">
+        <button id="api-save">Initialize</button>
+        <button id="api-cancel">Use Stored Key</button>
+      </div>
+      <p class="disclaimer">Key stored locally in this browser. You may reset at any time.</p>
     </div>
+  </div>
 
-    <script>
-        // Create stars
-        const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 3 + 's';
-            starsContainer.appendChild(star);
-        }
-    </script>
+  <div class="terminal-frame">
+    <div class="terminal-header">
+      <span class="brand">USCSS NOSTROMO // MOTHER</span>
+      <div class="controls">
+        <button id="reset-key" title="Reset API Key">AUTH RESET</button>
+        <button id="clear-thread" title="Clear Conversation">PURGE THREAD</button>
+      </div>
+    </div>
+    <div class="terminal-screen" id="terminal-screen">
+      <div class="scanlines"></div>
+      <div class="output" id="output"></div>
+    </div>
+    <form id="input-form" autocomplete="off">
+      <label for="user-input">QUERY:</label>
+      <input type="text" id="user-input" placeholder="Ask Mother..." required />
+      <button type="submit">TRANSMIT</button>
+    </form>
+  </div>
+
+  <template id="message-template">
+    <div class="message">
+      <span class="timestamp"></span>
+      <span class="role"></span>
+      <span class="text"></span>
+    </div>
+  </template>
+
+  <script src="script.js"></script>
 </body>
 </html>
